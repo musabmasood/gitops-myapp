@@ -1,2 +1,2 @@
 # gitops-myapp
-Sample application to be used for gitops demonstration
+A simple nodejs example application application
