@@ -1,8 +1,8 @@
 on:
   push:
     branches:
-    - "*" # uncomment when testing on branch
-    # - master
+#     - "*" # uncomment when testing on branch
+    - master
 name: Push Event
 jobs:
   build-and-push-image:
@@ -18,9 +18,11 @@ jobs:
         echo "$V" > VERSION
         echo "$DOCKERHUB" | docker login --username musabmasood --password-stdin
         docker build . -t "musabmasood/gitops-myapp:1.$V" && docker push "musabmasood/gitops-myapp:1.$V"
+  # ideally update chart should be in a script
   update-chart:
     name: Update version in helm chart
     runs-on: ubuntu-latest
+    needs: [build-and-push-image]
     steps:
     - uses: actions/checkout@v2
       with:
@@ -33,7 +35,6 @@ jobs:
         
         git config --global user.name "gitops-myapp-ci"
         git config --global user.email gitops-myapp-ci@github.com
-        
         cd gitops-myproject-k8s/charts/helm-myapp
         
         # update appVersion in Chart.yaml
@@ -41,11 +42,7 @@ jobs:
         
         # update image tag for the chart
         sed -i "s/tag.*/tag: $V/g" values.yaml
-      
-        cat Chart.yaml
-        cat values.yaml
         
         git add Chart.yaml values.yaml
         git commit -m 'bump version'
-        git status
         git push
