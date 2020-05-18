@@ -4,8 +4,6 @@ on:
     - "*" # uncomment when testing on branch
     # - master
 name: Push Event
-env:
-  IMAGE_VERSION: "${GITHUB_RUN_NUMBER}-${GITHUB_SHA:0:7}"
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
@@ -14,6 +12,8 @@ jobs:
     - env:
         DOCKERHUB: ${{ secrets.DOCKERHUB }}
       run: |
-        echo "$IMAGE_VERSION" > VERSION
+        SHA="${GITHUB_SHA:0:7}"
+        V="${GITHUB_RUN_NUMBER}-$SHA"
+        echo "$V" > VERSION
         echo "$DOCKERHUB" | docker login --username musabmasood --password-stdin
-        docker build . -t "musabmasood/gitops-myapp:1.$IMAGE_VERSION" && docker push "musabmasood/gitops-myapp:1.$IMAGE_VERSION"
+        docker build . -t "musabmasood/gitops-myapp:1.$V" && docker push "musabmasood/gitops-myapp:1.$V"
