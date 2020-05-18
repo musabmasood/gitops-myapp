@@ -6,6 +6,7 @@ on:
 name: Push Event
 jobs:
   build-and-push-image:
+    name: Build and push docker image
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -17,3 +18,15 @@ jobs:
         echo "$V" > VERSION
         echo "$DOCKERHUB" | docker login --username musabmasood --password-stdin
         docker build . -t "musabmasood/gitops-myapp:1.$V" && docker push "musabmasood/gitops-myapp:1.$V"
+  update-chart:
+    name: Update version in helm chart
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: musabmasood/gitops-myproject-k8s
+        ref: HEAD
+        path: gitops-myproject-k8s
+    - run: |
+        ls -al
+        ls -al gitops-myproject-k8s
