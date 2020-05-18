@@ -14,7 +14,7 @@ jobs:
         DOCKERHUB: ${{ secrets.DOCKERHUB }}
       run: |
         SHA="${GITHUB_SHA:0:7}"
-        V="${GITHUB_RUN_NUMBER}-$SHA"
+        V="1.${GITHUB_RUN_NUMBER}-$SHA"
         echo "$V" > VERSION
         echo "$DOCKERHUB" | docker login --username musabmasood --password-stdin
         docker build . -t "musabmasood/gitops-myapp:1.$V" && docker push "musabmasood/gitops-myapp:1.$V"
@@ -28,7 +28,10 @@ jobs:
         path: gitops-myproject-k8s
     - run: |
         SHA="${GITHUB_SHA:0:7}"
-        V="${GITHUB_RUN_NUMBER}-$SHA"
+        V="1.${GITHUB_RUN_NUMBER}-$SHA"
+        
+        git config --global user.name "gitops-myapp-ci"
+        git config --global user.email gitops-myapp-ci@github.com
         
         cd gitops-myproject-k8s/charts/helm-myapp
         
