@@ -30,7 +30,7 @@ jobs:
         SHA="${GITHUB_SHA:0:7}"
         V="${GITHUB_RUN_NUMBER}-$SHA"
         
-        cd charts/helm-myapp
+        cd gitops-myproject-k8s/charts/helm-myapp
         
         # update appVersion in Chart.yaml
         sed -i "s/appVersion.*/appVersion: $V/g" Chart.yaml
