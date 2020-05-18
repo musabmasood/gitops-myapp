@@ -27,5 +27,21 @@ jobs:
         repository: musabmasood/gitops-myproject-k8s
         path: gitops-myproject-k8s
     - run: |
-        ls -al
-        ls -al gitops-myproject-k8s
+        SHA="${GITHUB_SHA:0:7}"
+        V="${GITHUB_RUN_NUMBER}-$SHA"
+        
+        cd charts/helm-myapp
+        
+        # update appVersion in Chart.yaml
+        sed -i "s/appVersion.*/appVersion: $V/g" Chart.yaml
+        
+        # update image tag for the chart
+        sed -i "s/tag.*/tag: $V/g" values.yaml
+      
+        cat Chart.yaml
+        cat values.yaml
+        
+        git add Chart.yaml values.yaml
+        git commit -m 'bump version'
+        git status
+        git push
