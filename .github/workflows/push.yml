@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - "**"
+    - master
 name: Push Event
 jobs:
   build-image:
