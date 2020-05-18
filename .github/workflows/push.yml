@@ -3,16 +3,16 @@ on:
     branches:
     - master
 name: Push Event
+env:
+  IMAGE_VERSION: "$GITHUB_RUN_NUMBER-${GITHUB_SHA:0:7}"
 jobs:
-  build-image:
+  build-and-push-image:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - env:
         DOCKERHUB: ${{ secrets.DOCKERHUB }}
       run: |
-        SHA="${GITHUB_SHA:0:7}"
-        V="$GITHUB_RUN_NUMBER-$SHA"
-        echo "$V" > VERSION
+        echo "$IMAGE_VERSION" > VERSION
         echo "$DOCKERHUB" | docker login --username musabmasood --password-stdin
-        docker build . -t "musabmasood/gitops-myapp:1.$V" && docker push "musabmasood/gitops-myapp:1.$V"
+        docker build . -t "musabmasood/gitops-myapp:1.$IMAGE_VERSION" && docker push "musabmasood/gitops-myapp:1.$IMAGE_VERSION"
