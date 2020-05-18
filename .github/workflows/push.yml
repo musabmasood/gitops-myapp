@@ -17,7 +17,7 @@ jobs:
         V="1.${GITHUB_RUN_NUMBER}-$SHA"
         echo "$V" > VERSION
         echo "$DOCKERHUB" | docker login --username musabmasood --password-stdin
-        docker build . -t "musabmasood/gitops-myapp:1.$V" && docker push "musabmasood/gitops-myapp:1.$V"
+        docker build . -t "musabmasood/gitops-myapp:$V" && docker push "musabmasood/gitops-myapp:$V"
   # ideally update chart should be in a script
   update-chart:
     name: Update version in helm chart
