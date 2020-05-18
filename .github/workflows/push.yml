@@ -2,7 +2,7 @@ on:
   push:
     branches:
     - master
-name: Push Event
+name: Build and push
 jobs:
   build-image:
     runs-on: ubuntu-latest
