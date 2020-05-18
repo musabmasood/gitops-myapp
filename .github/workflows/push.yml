@@ -26,6 +26,6 @@ jobs:
       with:
         repository: musabmasood/gitops-myproject-k8s
         path: gitops-myproject-k8s
-#     - run: |
-#         ls -al
-#         ls -al gitops-myproject-k8s
+    - run: |
+        ls -al
+        ls -al gitops-myproject-k8s
