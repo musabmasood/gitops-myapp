@@ -11,6 +11,8 @@ jobs:
     - env:
         DOCKERHUB: ${{ secrets.DOCKERHUB }}
       run: |
-        echo "$GITHUB_RUN_NUMBER" > VERSION
+        SHA=$(git rev-parse --short "$GITHUB_SHA")
+        V="$GITHUB_RUN_NUMBER-$SHA"
+        echo "$V" > VERSION
         echo "$DOCKERHUB" | docker login --username musabmasood --password-stdin
-        docker build . -t "musabmasood/gitops-myapp:1.$GITHUB_RUN_NUMBER" && docker push "musabmasood/gitops-myapp:1.$GITHUB_RUN_NUMBER"
+        docker build . -t "musabmasood/gitops-myapp:1.$GITHUB_RUN_NUMBER" && docker push "musabmasood/gitops-myapp:1.$V"
