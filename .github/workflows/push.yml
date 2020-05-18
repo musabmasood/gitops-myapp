@@ -1,0 +1,10 @@
+on:
+  push:
+    branches:
+    - "**"
+name: Push Event
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo "hello" && ls -al
