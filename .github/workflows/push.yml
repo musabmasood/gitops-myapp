@@ -8,4 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: echo "hello" && ls -al
+    - run: echo "$GITHUB_RUN_NUMBER" > VERSION
+    - run: echo "$DOCKERHUB" | docker login --username musabmasood --password-stdin
+    - run: docker build . -t "musabmasood/gitops-myapp:1.$GITHUB_RUN_NUMBER" && docker push "musabmasood/gitops-myapp:1.$GITHUB_RUN_NUMBER"
+      
