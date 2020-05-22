@@ -1,6 +1,6 @@
 var http = require('http');
 const fs = require("fs")
-const color = "purple" 
+const color = "orange" 
 
 version = (fs.readFileSync("/VERSION", 'utf8')).toString()
 console.log("Starting MyApp version " + version)
